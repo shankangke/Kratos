@@ -184,18 +184,6 @@ function kratos_auto_post_link($content) {
 add_filter ('the_content', 'kratos_auto_post_link',0);
 
 /**
- * Init theme
- */
-add_action( 'load-themes.php', 'Init_theme' );
-function Init_theme(){
-  global $pagenow;
-  if ( 'themes.php' == $pagenow && isset( $_GET['activated'] ) ) {
-    wp_redirect( admin_url( 'themes.php?page=kratos' ) );
-    exit;
-  }
-}
-
-/**
  * Remove the excess CSS selectors
  */
 add_filter('nav_menu_css_class', 'my_css_attributes_filter', 100, 1);
@@ -531,9 +519,13 @@ function kratos_keywords(){
         if( is_home() || is_front_page() ){ echo kratos_option('site_keywords'); }
         elseif( is_category() ){ single_cat_title(); }
         elseif( is_single() ){
-            echo trim(wp_title('',FALSE)).',';
+            echo trim(str_replace(' *ksk*replace_mark*ksk* ',',',wp_title('*ksk*replace_mark*ksk*',FALSE,'right'))).',';
             if ( has_tag() ) {foreach((get_the_tags()) as $tag ) { echo $tag->name.','; } }
             foreach((get_the_category()) as $category) { echo $category->cat_name.','; } 
+            //foreach((get_the_category()) as $category) { $echo_category = $echo_category.$category->cat_name.','; } 
+            //rtrim($echo_category,',');
+            //substr($echo_category, 0, -1);
+            //echo $echo_category;
         }
         elseif( is_search() ){ the_search_query(); }
         else{ echo trim(wp_title('',FALSE)); }
@@ -1133,7 +1125,7 @@ function Kratos_admin_notice() {
         }
     </style>
     <div class="notice notice-info">
-    <p class="about-description">嗨，欢迎使用 Kratos 主题开始创作，同时欢迎您加入主题交流群：<a target="_blank" rel="nofollow" href="http://shang.qq.com/wpa/qunwpa?idkey=182bd07a135c085c88ab7e3de38f2b2d9a86983292355a4708926b99dcd5b89f">51880737</a></p>
+    <p class="about-description">嗨，欢迎使用 Kratos 主题开始创作，在正式使用前建议您参阅<a target="view_window" href="https://www.vtrois.com/kratos-faq.html">《主题使用说明》</a>与<a target="view_window" href="https://www.vtrois.com/kratos-article-style.html">《文章样式说明》</a>，同时欢迎您加入主题交流群：<a target="_blank" rel="nofollow" href="http://shang.qq.com/wpa/qunwpa?idkey=182bd07a135c085c88ab7e3de38f2b2d9a86983292355a4708926b99dcd5b89f">51880737</a></p>
     </div>
     <?php
 }
@@ -1143,7 +1135,7 @@ add_action( 'welcome_panel', 'Kratos_admin_notice' );
  * Admin footer text
  */
 function kratos_admin_footer_text($text) {
-       $text = '<span id="footer-thankyou">感谢使用 <a href=http://cn.wordpress.org/ target="_blank">WordPress</a>进行创作，<a target="_blank" rel="nofollow" href="http://shang.qq.com/wpa/qunwpa?idkey=182bd07a135c085c88ab7e3de38f2b2d9a86983292355a4708926b99dcd5b89f">点击</a> 加入主题讨论群。</span>';
+       $text = '<span id="footer-thankyou">感谢使用 <a href=http://cn.wordpress.org/ target="_blank">WordPress</a>进行创作，并使用 <a href="https://www.vtrois.com/theme-kratos.html" target="_blank">Kratos</a>主题样式，<a target="_blank" rel="nofollow" href="http://shang.qq.com/wpa/qunwpa?idkey=182bd07a135c085c88ab7e3de38f2b2d9a86983292355a4708926b99dcd5b89f">点击</a> 加入主题讨论群。</span>';
     return $text;
 }
 
